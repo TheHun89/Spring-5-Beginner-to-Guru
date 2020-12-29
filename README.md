@@ -327,7 +327,7 @@ Spring JDBC
 
 
 
-Section 9 Lombok
+Section 9 [Lombok](https://www.baeldung.com/intro-to-project-lombok)
 
 * verify you've enabled 'annotation processing' under compiler settings
 * val
@@ -366,7 +366,7 @@ public void givenArrayAndValue_whenValueFoundInArray_thenCorrect() {
 
 * [@WebMvcTest - web layer](https://reflectoring.io/spring-boot-web-controller-test/)
 * [@DataJpaTest persistence layer and Flyway/Liquibase](https://reflectoring.io/spring-boot-data-jpa-test/)
-* [@SpringBootTest - entire SB app](https://reflectoring.io/spring-boot-test/)
+* [@SpringBootTest - entire SB context/app](https://reflectoring.io/spring-boot-test/)
 * @ContextConfiguration
 * @Transactional and @Rollback are good for rolling back data
 
@@ -414,14 +414,12 @@ Maven Surefire Plugin
 
 * [WebJars.org](https://www.webjars.org/)
 
-* @SpringBootTest brings up entire Spring context
-
 * logging.level.guru.springframework=debug
 
 
 210. Persisting Image to Database and using ArgumentCaptor
 
-* [GitHub](https://github.com/springframeworkguru/spring5-recipe-app/tree/save-image-to-db)
+* [GitHub](https://github.com/springframeworkguru/spring5-recipe-app/blob/save-image-to-db/src/test/java/guru/springframework/services/ImageServiceImplTest.java)
 ```
 @Test
 public void saveImageFile() throws Exception {
@@ -463,8 +461,7 @@ public void saveImageFile() throws Exception {
 * if both, consider @ExceptionHandler
 
 
-* [GitHub](https://github.com/springframeworkguru/spring5-recipe-app/tree/assign-number-format-exception)
-* [GitHub](https://github.com/springframeworkguru/spring5-recipe-app/tree/assign-number-format-exception)
+* [GitHub](https://github.com/springframeworkguru/spring5-recipe-app/blob/assign-number-format-exception/src/main/java/guru/springframework/controllers/RecipeController.java)
 
 ```
 @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -560,7 +557,7 @@ Built in Constraints
 * Reactive Streams API - goal is to create a standard for asynchronous stream processing with non-blocking back pressure
 * Project Reactor is Spring 5 implementation of Reactive Streams
 * Interfaces include Publisher, Subscriber, Subscription, Processor
-* Spring-webflux is built on top of Reactive Streams which is built on top of Jetty, Netty servers
+* Spring-webflux stack is built on top of Reactive Streams which is built on top of Jetty, Netty servers
 * 2 reactive publisher types: 
 1. Mono - zero or one elements in data stream
 2. Flux - zero or many elements in data streeam
@@ -575,7 +572,7 @@ Built in Constraints
 
 #### Section 24 RESTful Web Services with Spring MVC
 
-376. Intro to MapStruct
+376. Intro to [MapStruct](https://www.baeldung.com/mapstruct)
 * MapStruct is a code generator for Java bean mapping; helps reduce coding for type conversions
 * example of using @Mapping to map properties of Car class with CarDTO class using MapStruct
 
@@ -614,7 +611,7 @@ public class SomeController {
 #### Section 29 JMS Messaging
 
 *[GitHub - JMS](https://github.com/springframeworkguru/sfg-jms/tree/spring-message-type)
-* JMS is a Java API which allows a Java appp to send a message to another app
+* JMS is a Java API which allows a Java app to send a message to another app
 * JMS requires an underlying implementation to be provided much like JPA; ie: SQS, ActiveMQ, RabbitMQ
 * send messages asynchronously; send and forget
 * types of messaging: 
