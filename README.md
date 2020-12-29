@@ -78,10 +78,9 @@ sql tables - author, book, publisher
 Equality in Hibernate
 
 * Need to add **equals(), hashCode(), toString()** methods for id field
-
 * Implement CommandLineRunner to bootstrap data
 
-H2
+[H2](https://www.baeldung.com/spring-boot-h2-database)
 
 * localhost:8080/h2-console
 * app properties set spring.h2.console.enabled=true
@@ -94,7 +93,7 @@ Thymeleaf
 * looks for files in resources/templates
 
 
-#### Section 3 - Dependency Injection
+#### Section 3 - [Dependency Injection](https://www.baeldung.com/inversion-control-and-dependency-injection-in-spring)
 
 31. Create Spring DI Project
 
@@ -120,7 +119,7 @@ Thymeleaf
 * abstract Service classes by having an Interface that is implemented by Service Implementations
 * mark properties as final
 
-* @Qualifier should be used when Spring doesn't know which implementation to inject - for example if two implementations implement the same interface and the interface is being injected via the constructor - the same can be done on property and setter injection 
+* [@Qualifier](https://www.baeldung.com/spring-qualifier-annotation) should be used when Spring doesn't know which implementation to inject - for example if two implementations implement the same interface and the interface is being injected via the constructor - the same can be done on property and setter injection 
 
 * Qualifier takes place over @Primary but when there is no Qualifier then the class marked Primary will be used
 * @Primary is added above the Service class
