@@ -4,13 +4,13 @@
 [GitHub](https://github.com/springframeworkguru)
 [JDL Studio for creating relationship graphs](https://www.jhipster.tech/jdl-studio/)
 
-IntelliJ helpful commands:
+#### IntelliJ helpful commands:
 
 * Cmd + N - pulls up ways to generate code in class (ie: build methods like toString, equals and hashCode)
 * right click on class name and select Create Test to create a test class
 
 
-Annotations
+#### Annotations
 
 * @Component - spring managed component
 * @Id and @GeneratedValue which tells JPA how it's getting generated (strategy=Generation.AUTO); property is going to be managed by the db
@@ -18,7 +18,7 @@ Annotations
 * @RequestMapping - map methods to http request paths
 
 
-Design Patterns
+#### Design Patterns
 
 * MVC - Thymeleaf
 * IoC
@@ -29,11 +29,15 @@ Design Patterns
 * app.properties - spring.banner.image.location=img.jpg, put image in resources
 
 
-Section 1
+#### Great Repos to Review
+
+* [Modularization, Service Abstraction from 51](https://github.com/springframeworkguru/sfg-pet-clinic)
+* [Relationships from 137](https://github.com/springframeworkguru/spring5-recipe-app/tree/many-to-many-jpa-example)
 
 
+#### Section 1
 
-Section 2
+#### Section 2
 
 Spring Initializer
 
@@ -90,7 +94,7 @@ Thymeleaf
 * looks for files in resources/templates
 
 
-Section 3 - Dependency Injection
+#### Section 3 - Dependency Injection
 
 31. Create Spring DI Project
 
@@ -168,7 +172,7 @@ Section 3 - Dependency Injection
 * This is wise if they share common methods such as findAll(), findById(), delete()
 
 
-Section 5 Spring Framework Configuration
+#### Section 5 Spring Framework Configuration
 
 * Config classes defined with @Configuration; classes are used to define beans that are declared with @Bean
 
@@ -186,7 +190,7 @@ Section 5 Spring Framework Configuration
     1. Singleton - default; only one instance of bean created in IoC container
     2. Prototype - new instance created each time the bean is requested
     (below are only available in web-aware apps)
-    3. Request - single instanc per http request; only valid in the context of a web-aware Spring ApplicationContext
+    3. Request - single instance per http request; only valid in the context of a web-aware Spring ApplicationContext
     4. Session - single instance per http session; only valid in the context of a web aware Spring ApplicationContext
     5. Global session - single instance per global session; typically only used in a Portlet context; only valid in the context of a web-aware Spring ApplicationContext
     6. Application - bean is scoped to the lifecycle of a ServletContext; only valid in the context of a web aware
@@ -206,11 +210,11 @@ Section 5 Spring Framework Configuration
 
 
 
-Section 6 External Properties
+#### Section 6 External Properties
 
 * PropertySource is common in legacy code; points to properties file in classpath; use app.properties instead
 
-* @Value
+* Property values can be injected directly into your beans by using the @Value annotation, accessed through Spring’s Environment abstraction, or be bound to structured objects through @ConfigurationProperties.
 
 * you can have multiple profiles in same yaml file
 
@@ -219,7 +223,7 @@ Section 6 External Properties
 * if you have yaml and properties file both and same key in both, then spring boot will look first in properties and if not found then will go to yaml
 
 
-Section 7 Web Development with MVC
+#### Section 7 Web Development with MVC
 
 Request Methods:  
 - GET
@@ -238,6 +242,7 @@ Request Methods:
 
 * Idempotence Methods - action such that repetitions of the action have no further effect on the outcome (PUT and DELETE, not POST)
 
+* Non-Idempotent - POST, PATCH, CONNECT
 
 Status Codes
 - 100 informational
@@ -257,15 +262,19 @@ Status Codes
 
 
 
-Section 8 Data Modeling with JPA and Hibernate
+#### Section 8 Data Modeling with JPA and Hibernate
 
-* [GitHub](https://github.com/springframeworkguru/spring5-recipe-app)
-* [Great Article on Relationship Mapping](https://stackabuse.com/a-guide-to-jpa-with-hibernate-relationship-mapping/)
+* [Great Article on Relationship Mapping](https://thorben-janssen.com/ultimate-guide-association-mappings-jpa-hibernate/)
+* [Another Great Article on Relationship Mapping](https://stackabuse.com/a-guide-to-jpa-with-hibernate-relationship-mapping/)
+* [Relationships](https://github.com/springframeworkguru/spring5-recipe-app/tree/many-to-many-jpa-example)
 
 * Lazy Fetch Type - data is not queried until referenced
 * Eager Fetch Type - data is queried up front
+
 * OneToMany, ManyToMany - Lazy
 * ManyToOne, OneToOne - Eager
+
+* NOTE:  ManyToMany uses a join table to define the relationship
 
 * JPA Cascade Types control how state changes are cascaded from parent objects to child objects
 
@@ -277,7 +286,7 @@ JPA Cascade Types:
 * DETACH - detaches all related entities if a manual detach occurs
 * ALL - applies all the above cascade options
 
-Inheritance
+#### [Hibernate Inheritance](https://www.baeldung.com/hibernate-inheritance)
 1. MappedSuperClass - entities inherit from a super class; a database table IS NOT created for the super class
 2. Single Table - one table is used for all subclasses; hibernate default
 3. Joined Table - base class and subclasses have their own tables; fetching subclass entities require a join to the parent table
@@ -297,6 +306,8 @@ Create and Update Timestamps
 
 * Unidirectional and Bidirectional
 * The main differenece is that bidirectional relationship provides navigational access in both directions, so that you can access the other side without explicit queries. Also it allows you to apply cascading options to both directions.
+
+* 'mappedBy' is used to define the field which 'owns' the reference of the relationship
 
 
 Hibernate DDL Auto
@@ -335,8 +346,9 @@ Section 9 Lombok
 * Gotchas - may need to override @EqualsAndHashCode(excludes=abcd) - abcd being a relational mapping; relational mappings happen lazily and you may need to add @Transactional
 
 
-Section 10 Testing
+#### Section 10 Testing
 
+* [Great Article on Testing](https://reflectoring.io/unit-testing-spring-boot/)
 * [GitHub ](https://github.com/springframeworkguru/spring5-recipe-app/tree/spring-integration-test)
 
 * TDD - create test that will fail THEN build out implementations to make it successful
@@ -353,12 +365,19 @@ public void givenArrayAndValue_whenValueFoundInArray_thenCorrect() {
 }
 ```
 
-* @WebMvcTest, @DataJpaTest, @ContextConfiguration
+* [@WebMvcTest - web layer](https://reflectoring.io/spring-boot-web-controller-test/)
+* [@DataJpaTest persistence layer and Flyway/Liquibase](https://reflectoring.io/spring-boot-data-jpa-test/)
+* [@SpringBootTest - entire SB app](https://reflectoring.io/spring-boot-test/)
+* @ContextConfiguration
 * @Transactional and @Rollback are good for rolling back data
 
 * Alt + Enter on class to test and you can create a test class for it
 
-Mockito
+* **Flyway** is a database migration tool that allows to specify multiple SQL scripts to create a database schema. It keeps track of which of these scripts have already been executed on the target database, so that it executes only those that have not been executed before.
+* **Liquibase** is another database migration tool that works similar to Flyway but supports other input formats besides SQL. We can provide YAML or XML files, for example, that define the database schema.
+
+
+* [Mockito for Unit Tests](https://reflectoring.io/unit-testing-spring-boot/)
 
 * you can use @RunWith(MockitoJUnitRunner.class) with
 ```
@@ -392,7 +411,7 @@ Maven Surefire Plugin
 
 
 
-Section 11 CRUD Operations w/Spring MVC
+#### Section 11 CRUD Operations w/Spring MVC
 
 * [WebJars.org](https://www.webjars.org/)
 
@@ -431,7 +450,7 @@ public void saveImageFile() throws Exception {
 ```
 
 
-Section 12 Validation and Constraints w/Spring MVC
+#### Section 12 Validation and Constraints w/Spring MVC
 
 * @ResponseStatus - allows you to annotate custom exception classes to indicate to the framework the HTTP status you want returned when that exception is thrown; global to app
 
@@ -515,7 +534,7 @@ Built in Constraints
 
 
 
-Section 18 Using MySQL with Spring Boot
+#### Section 18 Using MySQL with Spring Boot
 
 305. Different ways we loaded data
 1. Bootstrapping with RecipeBootstrap implementing ApplicationListener
@@ -527,7 +546,7 @@ Section 18 Using MySQL with Spring Boot
 
 
 
-Section 20 Reactive Programming
+#### Section 20 Reactive Programming
 
 * Reactive Manifesto 
 * Reactive programming - processes streams of data, event based, non-blocking, asynchronous, data streams
@@ -549,13 +568,13 @@ Section 20 Reactive Programming
 
 
 
-Section 23 Intro to RESTful Services
+#### Section 23 Intro to RESTful Services
 
 * stateless; does not manage client state
 
 
 
-Section 24 RESTful Web Services with Spring MVC
+#### Section 24 RESTful Web Services with Spring MVC
 
 376. Intro to MapStruct
 * MapStruct is a code generator for Java bean mapping; helps reduce coding for type conversions
@@ -586,14 +605,14 @@ public class SomeController {
 
 
 
-Section 25 Swagger
+#### Section 25 Swagger
 
 * Swagger Editor - edit API specs in YAML and preview doc in real time
 * Swagger Codegen - create client libraries and server stubs from a Swagger definition
 
 
 
-Section 29 JMS Messaging
+#### Section 29 JMS Messaging
 
 *[GitHub - JMS](https://github.com/springframeworkguru/sfg-jms/tree/spring-message-type)
 * JMS is a Java API which allows a Java appp to send a message to another app
