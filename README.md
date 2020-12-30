@@ -618,3 +618,29 @@ public class SomeController {
 1. Point to Point - consumers listen to queue
 2. Publish/Subscribe - message sent to topic and consumers listen to topic
 * message contains Header, Properties and Payload
+
+
+
+
+#### Other
+
+* Jackson ObjectMapper: 
+serialize Java objects into JSON:
+```
+ObjectMapper objectMapper = new ObjectMapper();
+Car car = new Car("yellow", "renault");
+objectMapper.writeValue(new File("target/car.json"), car);
+```
+The output of the above in the file will be:
+```
+{"color":"yellow","type":"renault"}
+```
+
+deserialize JSON string into Java objects
+```
+String json = "{ \"color\" : \"Black\", \"type\" : \"BMW\" }";
+Car car = objectMapper.readValue(json, Car.class);    
+```
+
+* AOP 
+* 
