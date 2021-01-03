@@ -24,6 +24,8 @@
 * IoC
 * Singleton - one instance is ever created and this shared instance is injected into each collaborating object
 * Prototype - brand new bean instance created each and every time the prototype is referenced by collaborating beans
+* Factory - BeanFactory is an interface representing a container that provides and manages bean instances
+* Template Method Pattern: JdbcTemplate, HibernateTemplate
 
 * Text to ASCII - http://patorjk.com/software/taag/  put in banner.txt in resources folder
 * app.properties - spring.banner.image.location=img.jpg, put image in resources
@@ -186,7 +188,7 @@ Thymeleaf
 * when possible, do not specify versions in the POM; allow the versions to inherit from the parent
 
 78. [Spring Bean Scopes](https://www.baeldung.com/spring-bean-scopes)
-    1. Singleton - default; only one instance of bean created in IoC container
+    1. Singleton - default; only one instance of bean created in IoC container; singleton beans are not thread-safe
     2. Prototype - new instance created each time the bean is requested
     (below are only available in web-aware apps)
     3. Request - single instance per http request; only valid in the context of a web-aware Spring ApplicationContext
