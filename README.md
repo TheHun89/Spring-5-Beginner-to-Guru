@@ -35,6 +35,7 @@
 
 * [Modularization, Service Abstraction from 51](https://github.com/springframeworkguru/sfg-pet-clinic)
 * [Relationships from 137](https://github.com/springframeworkguru/spring5-recipe-app/tree/many-to-many-jpa-example)
+* [Simple CRUD Example](https://www.javaguides.net/2019/01/spring-boot-microsoft-sql-server-jpa-hibernate-crud-restful-api-tutorial.html)
 
 
 #### Section 1
