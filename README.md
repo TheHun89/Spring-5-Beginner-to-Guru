@@ -604,7 +604,7 @@ public class SomeController {
 
 
 
-#### Section 25 Swagger
+#### Section 25 [Swagger](https://springframework.guru/spring-boot-restful-api-documentation-with-swagger-2/)
 
 * Swagger Editor - edit API specs in YAML and preview doc in real time
 * Swagger Codegen - create client libraries and server stubs from a Swagger definition
@@ -645,5 +645,143 @@ String json = "{ \"color\" : \"Black\", \"type\" : \"BMW\" }";
 Car car = objectMapper.readValue(json, Car.class);    
 ```
 
+
+#### RestTemplate
+
+Path Variables, Request Params
+```
+String url = "http://test.com/Services/rest/{id}/Identifier";
+Map<String, String> params = new HashMap<String, String>();
+params.put("id", "1234");
+URI uri = UriComponentsBuilder.fromUriString(url)
+        .buildAndExpand(params)
+        .toUri();
+uri = UriComponentsBuilder
+        .fromUri(uri)
+        .queryParam("name", "myName")
+        .build()
+        .toUri();
+restTemplate.exchange(uri , HttpMethod.PUT, requestEntity, class_p);
+```
+HTTP Headers, Request Params
+```
+HttpHeaders headers = new HttpHeaders();
+headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
+        .queryParam("msisdn", msisdn)
+        .queryParam("email", email)
+        .queryParam("clientVersion", clientVersion)
+        .queryParam("clientType", clientType)
+        .queryParam("issuerName", issuerName)
+        .queryParam("applicationName", applicationName);
+
+HttpEntity<?> entity = new HttpEntity<>(headers);
+
+HttpEntity<String> response = restTemplate.exchange(
+        builder.toUriString(), 
+        HttpMethod.GET, 
+        entity, 
+        String.class);
+```
+Request Body and HTTP Headers
+```
+HttpHeaders headers = new HttpHeaders();
+headers.setContentType(MediaType.APPLICATION_JSON);
+
+HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
+ResponseEntity<String> response = restTemplate.put(url, entity);
+```
+HTTP Headers with Authorization (Basic Auth)
+```
+String plainCreds = "willie:p@ssword";
+byte[] plainCredsBytes = plainCreds.getBytes();
+byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+String base64Creds = new String(base64CredsBytes);
+
+HttpHeaders headers = new HttpHeaders();
+headers.add("Authorization", "Basic " + base64Creds);
+
+HttpEntity<String> request = new HttpEntity<String>(headers);
+ResponseEntity<Account> response = restTemplate.exchange(url, HttpMethod.GET, request, Account.class);
+```
+
+
+* [HATEOAS](https://www.baeldung.com/spring-hateoas-tutorial)
+* The Spring HATEOAS project is a library of APIs that we can use to easily create REST representations that follow the principle of HATEOAS (Hypertext as the Engine of Application State).
+* Generally speaking, the principle implies that the API should guide the client through the application by returning relevant information about the next potential steps, along with each response.
+* Use case - it can be used to append links to resources in the response body
+
 * AOP 
-* 
+
+* [Actuator](https://www.baeldung.com/spring-boot-actuators)
+* used to expose operational information about the running application — health, metrics, info, dump, env, etc
+
+
+* Spring Security
+
+
+* Transport Layer Security
+
+
+* Networking
+
+
+* RestAssured
+
+
+* [Spring Cloud Netflix **Ribbon**](https://www.baeldung.com/spring-cloud-rest-client-with-netflix-ribbon) - is an Inter Process Communication (IPC) cloud library. Ribbon primarily provides client-side load balancing algorithms.  It also provides service discovery integration, fault tolerance and configurable load balancing rules.
+
+* [Netflix **Feign**](https://www.baeldung.com/intro-to-feign) 
+
+* [Netflix **Eurkeka**](https://www.baeldung.com/spring-cloud-netflix-eureka) - Client-side service discovery allows services to find and communicate with each other without hard-coding hostname and port. 
+
+* Zipkin, Sleuth - tracing and monitoring
+
+[**Sleuth**](https://www.baeldung.com/spring-cloud-sleuth-single-application) - assigns a unique id to a request so you can trace it across components/services
+[**Zipkin**](https://www.baeldung.com/tracing-services-with-zipkin) - logs would be stored in a central location from all the services 
+
+* [Netflix API Gateway **Zuul**](https://www.baeldung.com/spring-rest-with-zuul-proxy)
+* [**Hystrix**](https://www.baeldung.com/introduction-to-hystrix) - fault tolerance
+* [**Spring Cloud Bus**](https://www.baeldung.com/spring-cloud-bus)
+
+
+* Filtering: static (use @JsonIgnore), dynamic (use MappingJacksonValue, SimpleFilterProvider and @JsonFilter)
+
+
+* CurrencyConversionService calls CurrencyExchangeService with RestTemplate.  CurrencyExchangeService calls LimitsService.  CurrencyExchangeService also access database using findByFromAndTo for currency exchanges.  
+* LimitsService retrieves min and max values.  LimitsService gets the configuration details from CloudConfigService which uses github file to retrieve env values.  So we would have dev, qa, prod env values.  They would have the min and max values we are trying to achieve.  Just set the profile in the **bootstrap properties** of limits service.  Also set the spring.cloud.config.uri.  
+* As long as Spring Boot Actuator and Spring Config Client are on the classpath any Spring Boot application will try to contact a config server on http://localhost:8888, the default value of spring.cloud.config.uri
+
+* CurrencyConversionService can replace RestTemplate with FeignClient using a proxy client interface to access the CurrencyExchangeService
+* CurrencyExchangeService could have multiple instances using Ribbon.  Simply add the list of servers/ports to the app.properties of the CurrencyConversionService and update the proxy by adding @RibbonClient.  You will want to remove the url from the @FeignClient.
+* TIP: to run a new instance on a different port in IntelliJ - select Run->Edit Configurations and duplilcate the instance.  Then in VM options enter: -Dserver.port=8001
+
+* You do not want to hard code the instances of a service you are calling in the app.properties like we did with Ribbon.  Whenever an instance of a service comes up it must register itself with the Eureka naming server (service registration).  So if another service wants to talk with another service, then it will talk to the Eureka naming server and ask what the instances are of the other service - known as service discovery.
+* If you launch the Eureka server and navigate to the localhost via browser you can see the registered instances.
+* You will need to connect the CurrencyConversionService and CurrencyExchangeService to the EurekaNamingServer.  Add @EnableDiscoveryClient to main classes.  Also add the Eureka url to the app.properties.  Do the same for the CurrencyExchangeService.  And remove the Ribbon servers from the CurrencyConversionService app.properties.
+* API Gateways provide authentication, authorization, security, rate limiting, fault toleration and service aggregation.
+* To create a Zuul API Gateway you need to 
+1. create a component
+2. determine what it will do when it receives a request 
+3. determine correct requests are configured to pass through Zuul.
+* In the ZuulApiGatewayService add @EnableZuulProxy and @EnableDiscoverClient to the main class.  Set the eureka.client.service-url.default-zone to the eureka server to in the app.properties just as we did in the CurrencyConversionService.
+* You can log info with a ZuulLoggingFilter by determining when filtering should happen before, after or error requests only (filterType), logic (run),  what priority between different filters (filterOrder) and if the filter should be executed or not (shouldFilter).
+* http://localhost:8765/currency-exchange-service/currency-exchange/from/EUR/to/INR will go through Zuul gateway and hit the CurrencyExchangeService at http://localhost:8000/currency-exchange/from/EUR/to/INR
+* To make the call from CurrencyConversionService to CurrencyExchangeService you will modify the CurrencyExchangeServiceProxy to replace @FeignClient name with the ZuulApiGatewayService name instead of connecting to the CurrencyExchangeService.  Also you will need to change the @GetMapping uri by appending currency-exchange-service to  currency-exchange.  You do this because the uri that exposes the CurrencyExchange endpoint has changed from directly calling it to going throught the Zuul gateway.  The currency-exchange portion is coming from the @GetMapping on the Controller from the CurrencyExchangeController.
+* You can hit the CurrencyConversionService url directly with http://localhost:8100/currency-converter-feign/from/USD/to/INR/quantity/10 which will hit the CurrecyExchangeService via the proxy.  But it would be ideal to hit the CurrencyConversionService through the proxy as well and not directly.  http://localhost:8765/currency-conversion-service/currency-converter-feign/from/USD/to/INR/quantity/10
+
+* To trace all requests set up a Bean on the ZuulApiGatewayService main class - defaultSampler to return AlwaysSampler.  You will need to do the same thing to the CurrencyConversionService and the CurrencyExchangeService. 
+* Sleuth assigns a unique id to a request so you can trace it across components/services.
+* To get the logs messages from the services to the Zipkin server we can use RabbitMQ.  The Zipkin server can pick up the messages from a queue after the services send the messages to the queue.  RabbitMQ acts as the middleman.  Typically Zipkin is connected to a database but we will use an in memory db to store the messages.
+* You may need to download Zipkin server manually based onw what release of Spring Cloud you're using.  Then you will need to launch the jar.  localhost:9411/sipkin
+* start up rabbitMQ on Mac /usr/local/sbin/rabbitmq-server
+* also need to configure Zipkin that we have a RabbitMQ server up and running and to connect to it:  RABBIT_URI=amqp://localhost java -jar zipkin-server-2.5.2.exec.jar
+* You will need to add dependencies for Zipkin and RabbitMQ in the Currency and Zuul services.
+* Order of launching services locally should be naming service, zipkin, currency services, zuul api gateway service
+
+* For services like the Limits service that store configuration in Spring Cloud Config - you will need to refresh the Actuator endpoint for all of the ports (after commiting the new config).  If you have many instances that can be a pain.  Instead use Spring Cloud Bus where you can refresh a single endpoint that will refresh all instances.  This is because when the apps start up all instances register with the Bus.  Simply add the spring-cloud-starter-bus-amqp dependency to the LImits and ConfigServer services.  Also disable managment.security.enabled in app.properties for Actuator.
+
+* If one microservice is down it can pull down another service that is dependent on it - one of the major disadvantages of microservices.  Fault tolerance is a solution to this by gracefully handling errors.  Add the hystrix dependency to LimitsService and add @EnableHystrix to main class.  Also add @HystrixCommand(fallbackmethod) on controller methods - basically says what is the fallback method if there is an error.  For example you'd want to return some default configuration/values.  
+
+* [Baeldung - Example of Netfilx OSS](https://github.com/eugenp/tutorials/tree/master/spring-cloud/spring-cloud-bootstrap)
